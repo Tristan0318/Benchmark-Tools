@@ -1,0 +1,115 @@
+{
+  "_README": [
+    "MultiTurn run: the 8 detectors of the 2026-09 roster plus kimi-k2.6 and",
+    "gemini-3-flash, the two paper models that also have MultiStep and MultiImage",
+    "data -- they are the only ones that can complete the",
+    "MultiStep / MultiImage / MultiTurn ladder.",
+    "gemini-3-flash is inherited from detect.py's built-ins unchanged.",
+    "DashScope keys: one slow model each -- KEY_1 qwen3.8-max-0902, KEY_2 kimi-k3,",
+    "KEY_3 qwen3.8-flash + deepseek-v4.1-flash.",
+    "Each DashScope key is bound to its OWN workspace host, so key_env and endpoint must move together -- rekeying alone yields 'Workspace endpoint access denied'."
+  ],
+  "detectors": [
+    {
+      "name": "qwen3.8-max-0902",
+      "provider": "dashscope",
+      "model_id": "qwen3.8-max-0902",
+      "key_env": "DASHSCOPE_API_KEY_1",
+      "endpoint": "dashscope1",
+      "stream": true,
+      "notes": "doc: Qwen3.8 hybrid, thinking mode enabled by default; measured reasoning_content returned"
+    },
+    {
+      "name": "qwen3.8-flash",
+      "provider": "dashscope",
+      "model_id": "qwen3.8-flash",
+      "key_env": "DASHSCOPE_API_KEY_3",
+      "endpoint": "dashscope3",
+      "stream": true,
+      "notes": "doc: Qwen3.8 hybrid, thinking mode enabled by default; measured reasoning_content returned"
+    },
+    {
+      "name": "kimi-k3",
+      "provider": "dashscope",
+      "model_id": "kimi-k3",
+      "key_env": "DASHSCOPE_API_KEY_2",
+      "endpoint": "dashscope2",
+      "stream": true,
+      "notes": "doc page documents the maximum chain-of-thought length but not the default; measured reasoning_content returned by default -> thinking on"
+    },
+    {
+      "name": "deepseek-v4.1-flash",
+      "provider": "dashscope",
+      "model_id": "deepseek-v4.1-flash",
+      "key_env": "DASHSCOPE_API_KEY_3",
+      "endpoint": "dashscope3",
+      "stream": true,
+      "notes": "doc: DeepSeek v4 family default enabled (v4-pro/v4-flash listed); measured reasoning_content returned"
+    },
+    {
+      "name": "gpt-5.6-terra",
+      "provider": "openai",
+      "model_id": "gpt-5.6-terra",
+      "key_env": "OPENAI_API_KEY",
+      "endpoint": "openai",
+      "stream": false,
+      "notes": "doc: GPT-5.6 defaults to reasoning_effort 'medium'. Measured 47 reasoning tokens -> not set",
+      "_measured_tokens": {
+        "input": 2127,
+        "output": 125,
+        "thinking": 47
+      }
+    },
+    {
+      "name": "gemini-3.8-flash",
+      "provider": "gemini",
+      "model_id": "gemini-3.8-flash",
+      "key_env": "GEMINI_API_KEY",
+      "endpoint": "gemini",
+      "stream": false,
+      "notes": "doc: thinking default 'On (medium)', cannot be disabled. Measured 315 thought tokens -> not set",
+      "_measured_tokens": {
+        "input": 1310,
+        "output": 63,
+        "thinking": 315
+      }
+    },
+    {
+      "name": "grok-4.6",
+      "provider": "xai",
+      "model_id": "grok-4.6",
+      "key_env": "XAI_API_KEY",
+      "endpoint": "xai",
+      "stream": false,
+      "notes": "doc lists no reasoning toggle; empirically reasoning_effort='low' is accepted but 'none' returns HTTP 400, so reasoning is always on. Measured 1192 reasoning tokens at default -> not set",
+      "_measured_tokens": {
+        "input": 2450,
+        "output": 102,
+        "thinking": 1192
+      }
+    },
+    {
+      "name": "gpt-6-astra",
+      "provider": "openai",
+      "model_id": "gpt-6-astra",
+      "key_env": "OPENAI_API_KEY",
+      "endpoint": "openai",
+      "stream": false,
+      "notes": "doc: reasoning_effort default is model-dependent; GPT-6 Astra rejects 'none' (HTTP 400) so reasoning cannot be turned off. Measured 36 reasoning tokens at default -> not set",
+      "_measured_tokens": {
+        "input": 2127,
+        "output": 129,
+        "thinking": 36
+      }
+    },
+    {
+      "name": "kimi-k2.6",
+      "provider": "dashscope",
+      "model_id": "kimi-k2.6",
+      "key_env": "DASHSCOPE_API_KEY_1",
+      "endpoint": "dashscope1",
+      "stream": false,
+      "notes": "paper roster; moved to KEY_1 so each key carries one slow model"
+    }
+  ]
+}

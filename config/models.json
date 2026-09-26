@@ -1,0 +1,45 @@
+{
+  "_README": [
+    "Detector (MLLM) registry, loaded by tools/model_registry.py.",
+    "Passed via --models-config to detect.py or detect_multiturn.py; without that",
+    "flag both scripts use the 10 built-ins hard-coded in detect.py, so the",
+    "published results stay reproducible.",
+    "",
+    "Fields: name (output filename), provider (openai|dashscope|xai|gemini),",
+    "model_id (exact API id), key_env, endpoint, stream, extra_body,",
+    "gemini_thinking_level.",
+    "",
+    "endpoint accepts: an alias ('openai', 'xai', 'gemini', or 'dashscope1'..",
+    "'dashscope3' — Bailian issues WORKSPACE endpoints, so each DashScope entry",
+    "must name the slot matching its key_env), a full base URL, or a ${ENV_VAR}",
+    "reference resolved at load time (keeps hosts out of the repo).",
+    "",
+    "The first 11 entries mirror detect.py exactly. The NEW-DETECTOR-* entries are",
+    "placeholders: rename them, fill in model_id/endpoint, set disabled=false."
+  ],
+
+  "detectors": [
+    {"name": "qvq-max-latest",             "provider": "dashscope", "model_id": "qvq-max-latest",             "key_env": "DASHSCOPE_API_KEY_1", "endpoint": "dashscope1", "stream": true},
+    {"name": "qwen3-vl-plus",              "provider": "dashscope", "model_id": "qwen3-vl-plus",              "key_env": "DASHSCOPE_API_KEY_1", "endpoint": "dashscope1", "stream": false},
+    {"name": "qwen3.6-plus",               "provider": "dashscope", "model_id": "qwen3.6-plus",               "key_env": "DASHSCOPE_API_KEY_2", "endpoint": "dashscope2", "stream": true},
+    {"name": "kimi-k2.6",                  "provider": "dashscope", "model_id": "kimi-k2.6",                  "key_env": "DASHSCOPE_API_KEY_2", "endpoint": "dashscope2", "stream": false},
+    {"name": "qwen3-vl-flash",             "provider": "dashscope", "model_id": "qwen3-vl-flash",             "key_env": "DASHSCOPE_API_KEY_2", "endpoint": "dashscope2", "stream": false},
+    {"name": "qwen3.6-flash",              "provider": "dashscope", "model_id": "qwen3.6-flash",              "key_env": "DASHSCOPE_API_KEY_3", "endpoint": "dashscope3", "stream": true},
+    {"name": "grok-4-1-fast-reasoning",    "provider": "xai",       "model_id": "grok-4-1-fast-reasoning",    "key_env": "XAI_API_KEY",         "endpoint": "xai",       "stream": false},
+    {"name": "grok-4.20-reasoning-latest", "provider": "xai",       "model_id": "grok-4.20-reasoning-latest", "key_env": "XAI_API_KEY",         "endpoint": "xai",       "stream": false},
+    {"name": "gemini-3-flash",             "provider": "gemini",    "model_id": "gemini-3-flash-preview",     "key_env": "GEMINI_API_KEY",      "endpoint": "gemini",    "stream": false},
+    {"name": "gpt-5.4-mini",               "provider": "openai",    "model_id": "gpt-5.4-mini",               "key_env": "OPENAI_API_KEY",      "endpoint": "openai",    "stream": false},
+
+    {"name": "gpt-6",          "provider": "openai",    "model_id": "FILL-ME", "key_env": "OPENAI_API_KEY",      "endpoint": "openai",    "stream": false, "extra_body": {}, "disabled": true,
+     "notes": "New OpenAI detector (GPT-6 family). Confirm with: check_models.py --list --provider openai --grep gpt-6. If the id needs a reasoning setting, put it in extra_body, e.g. {\"reasoning_effort\": \"medium\"}."},
+
+    {"name": "grok-new",       "provider": "xai",       "model_id": "FILL-ME", "key_env": "XAI_API_KEY",         "endpoint": "xai",       "stream": false, "extra_body": {}, "disabled": true,
+     "notes": "New xAI detector. Confirm with: check_models.py --list --provider xai. Rename the entry to the real id so result filenames stay self-describing."},
+
+    {"name": "qwen3.8",        "provider": "dashscope", "model_id": "FILL-ME", "key_env": "DASHSCOPE_API_KEY_1", "endpoint": "dashscope1", "stream": true,  "extra_body": {}, "disabled": true,
+     "notes": "New Qwen detector (3.8 family). Confirm with: check_models.py --list --provider dashscope --grep qwen3.8. DashScope thinking models usually REQUIRE stream=true; if the probe returns a 400 about streaming, that is the field to flip."},
+
+    {"name": "gemini-new",     "provider": "gemini",    "model_id": "FILL-ME", "key_env": "GEMINI_API_KEY",      "endpoint": "gemini",    "stream": false, "gemini_thinking_level": null, "disabled": true,
+     "notes": "New Gemini detector. Confirm with: check_models.py --list --provider gemini --grep gemini. Set gemini_thinking_level only to override the vendor default."}
+  ]
+}
